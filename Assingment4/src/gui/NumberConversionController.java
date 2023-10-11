@@ -3,6 +3,7 @@ package gui;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
@@ -18,11 +19,14 @@ public class NumberConversionController implements Initializable {
     @FXML
     private Label label;
     @FXML
-    private TextField txtNumberInputMiles;
+    private TextField txtNumberInput, lblResult;
+
     @FXML
-    private TextField txtNumberInputKm;
-    @FXML
-    private TextField lblResult;
+    private Button btnCalcKmToMiles, btnCalcMilesToKm, btnCalcLbToKg, btnCalcKgToLb, btnCalcCelToFar, btnCalcFarToCel;
+
+
+
+
 
     public String getGreetingsMessage(String name) {
         return "Hello, " + name + ". Greetings from the top Java developer class in town.";
@@ -44,20 +48,48 @@ public class NumberConversionController implements Initializable {
     }
 
     @FXML
+    private void onClickDistance(ActionEvent event){
 
-    private void onClick(ActionEvent event)
-    {
-        double txtFieldValue = Double.parseDouble(txtNumberInputMiles.getText());
-        double resultInMiles = ncModel.getKilometersFromMiles(txtFieldValue);
-        String resultAsString = String.format("%.3f", resultInMiles);
+        double txtFieldValue = Double.parseDouble((txtNumberInput.getText()));
+        double result = 0.0;
+        String resultAsString = "";
+
+        if (event.getSource() == btnCalcKmToMiles) {
+            result = ncModel.getKilometersFromMiles(txtFieldValue);
+        } else if (event.getSource() == btnCalcMilesToKm) {
+            result = ncModel.getMilesFromKilometers(txtFieldValue);
+        }
+        resultAsString = String.format("%.4f", result);
         lblResult.setText(resultAsString);
     }
 
     @FXML
-    private void onClick2(ActionEvent event){
-        double txtFieldValue = Double.parseDouble((txtNumberInputMiles.getText()));
-        double resultInKm = ncModel.getMilesFromKilometers(txtFieldValue);
-        String resultAsString = String.format("%.3f", resultInKm);
+    private void onClickWeight(ActionEvent event){
+
+        double txtFieldValue = Double.parseDouble((txtNumberInput.getText()));
+        double result = 0.0;
+        String resultAsString = "";
+
+         if (event.getSource() == btnCalcKgToLb){
+             result = ncModel.getDifferenceWeightKgToLb(txtFieldValue);
+         } else if (event.getSource() == btnCalcLbToKg) {
+             result = ncModel.getDifferenceWeightLbToKg(txtFieldValue);
+         }
+         resultAsString = String.format("%.4f", result);
+         lblResult.setText(resultAsString);
+    }
+
+    public void onClickTemperature(ActionEvent actionEvent) {
+        double txtFieldValue = Double.parseDouble((txtNumberInput.getText()));
+        double result = 0.0;
+        String resultAsString = "";
+
+        if (actionEvent.getSource() == btnCalcFarToCel){
+            result = (txtFieldValue - 32) / 1.8;
+        } else if (actionEvent.getSource() == btnCalcCelToFar) {
+            result = (txtFieldValue * 1.8) + 32;
+        }
+        resultAsString = String.format("%.4f", result);
         lblResult.setText(resultAsString);
     }
 }
